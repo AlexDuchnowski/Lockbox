@@ -1,5 +1,3 @@
-from typing import List
-
 import rotation as rot
 
 
@@ -51,6 +49,8 @@ class Cube:
             self.state[neighbor] = rot.rotate_n(
                 self.state[neighbor], (4 - rotations[i]) % 4
             )
+        #! This needs to update rotations for specific stickers.
+        #! Rotation is no longer generalizable from just the face once we can rotate faces.
 
     def get_face(self):
         return rot.rotate_n(self.state[self.face], self.rotation)

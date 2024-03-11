@@ -4,12 +4,12 @@ from typing import List, Optional
 import pygame
 
 import cube
-import pieces
 import rotation as rot
+import stickers
 
 pygame.init()
 
-CELL_SIZE = 20
+CELL_SIZE = 24
 
 SCREEN_WIDTH = 23 * CELL_SIZE
 SCREEN_HEIGHT = 23 * CELL_SIZE
@@ -28,7 +28,7 @@ def form_maze(c: cube.Cube) -> List[List[str]]:
     cube_face = c.get_face()
     return [
         [
-            rot.rotate_n(pieces.cells[cube_face[row // 7][col // 7]], c.rotation)[
+            rot.rotate_n(stickers.stickers[cube_face[row // 7][col // 7]], c.rotation)[
                 row % 7
             ][col % 7]
             for col in range(21)
@@ -41,7 +41,7 @@ def render(maze: List[List[str]], x: Optional[int] = None, y: Optional[int] = No
     if x is not None and y is not None:
         pygame.draw.rect(
             screen,
-            pieces.colors[maze[y][x]],
+            stickers.colors[maze[y][x]],
             ((x + 1) * CELL_SIZE, (y + 1) * CELL_SIZE, CELL_SIZE, CELL_SIZE),
         )
     else:
@@ -49,7 +49,7 @@ def render(maze: List[List[str]], x: Optional[int] = None, y: Optional[int] = No
             for j in range(21):
                 pygame.draw.rect(
                     screen,
-                    pieces.colors[maze[i][j]],
+                    stickers.colors[maze[i][j]],
                     ((j + 1) * CELL_SIZE, (i + 1) * CELL_SIZE, CELL_SIZE, CELL_SIZE),
                 )
 
