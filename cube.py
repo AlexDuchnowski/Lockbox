@@ -32,9 +32,25 @@ class Cube:
         update = self.neighbors[self.face][(direction - self.rotation) % 4]
         self.face, self.rotation = update[0], update[1] + self.rotation % 4
 
-    def rotate_face(self, face: int, rotation: int):
-        # TODO: Implement this method
-        pass
+    def rotate_face_clockwise(self, face: int):
+        new_face = rot.rotate_n(self.state[face], 1)
+        self.state[face] = new_face
+
+        neighbors = self.neighbors[face]
+
+        rotations, borders = [], []
+        for i, (neighbor, rotation) in enumerate(neighbors):
+            rotations.append(((i if i % 2 == 1 else 2 - i) + rotation) % 4)
+            self.state[neighbor] = rot.rotate_n(self.state[neighbor], rotations[-1])
+            borders.append([x for x in self.state[neighbor][0]])
+
+        for i in range(4):
+            neighbor = neighbors[i][0]
+            for j in range(3):
+                self.state[neighbor][0][j] = borders[(i - 1) % 4][j]
+            self.state[neighbor] = rot.rotate_n(
+                self.state[neighbor], (4 - rotations[i]) % 4
+            )
 
     def get_face(self):
         return rot.rotate_n(self.state[self.face], self.rotation)
@@ -43,7 +59,11 @@ class Cube:
 if __name__ == "__main__":
     c = Cube()
     print(c)
+    # for _ in range(4):
+    #     print()
+    #     c.change_face(3)
+    #     print(c)
     for _ in range(4):
+        c.rotate_face_clockwise(2)
         print()
-        c.change_face(3)
         print(c)

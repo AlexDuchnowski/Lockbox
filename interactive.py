@@ -54,6 +54,24 @@ def render(maze: List[List[str]], x: Optional[int] = None, y: Optional[int] = No
                 )
 
 
+def draw_player():
+    pygame.draw.rect(
+        screen,
+        (60, 60, 60),
+        ((PLAYER_X + 1) * CELL_SIZE, (PLAYER_Y + 1) * CELL_SIZE, CELL_SIZE, CELL_SIZE),
+    )
+    pygame.draw.rect(
+        screen,
+        (255, 20, 147),
+        (
+            (PLAYER_X + 1) * CELL_SIZE + (CELL_SIZE // 4),
+            (PLAYER_Y + 1) * CELL_SIZE + (CELL_SIZE // 4),
+            CELL_SIZE // 2,
+            CELL_SIZE // 2,
+        ),
+    )
+
+
 maze = form_maze(c)
 screen.fill((0, 0, 0))
 render(maze)
@@ -101,13 +119,32 @@ while run:
                 elif maze[PLAYER_Y + 1][PLAYER_X] != "X":
                     render(maze, PLAYER_X, PLAYER_Y)
                     PLAYER_Y += 1
+            elif event.key == pygame.K_u:
+                c.rotate_face_clockwise(0)
+                maze = form_maze(c)
+                render(maze)
+            elif event.key == pygame.K_l:
+                c.rotate_face_clockwise(1)
+                maze = form_maze(c)
+                render(maze)
+            elif event.key == pygame.K_f:
+                c.rotate_face_clockwise(2)
+                maze = form_maze(c)
+                render(maze)
+            elif event.key == pygame.K_r:
+                c.rotate_face_clockwise(3)
+                maze = form_maze(c)
+                render(maze)
+            elif event.key == pygame.K_b:
+                c.rotate_face_clockwise(4)
+                maze = form_maze(c)
+                render(maze)
+            elif event.key == pygame.K_d:
+                c.rotate_face_clockwise(5)
+                maze = form_maze(c)
+                render(maze)
 
-    # Draw Player
-    pygame.draw.rect(
-        screen,
-        (255, 20, 147),
-        ((PLAYER_X + 1) * CELL_SIZE, (PLAYER_Y + 1) * CELL_SIZE, CELL_SIZE, CELL_SIZE),
-    )
+    draw_player()
 
     pygame.display.update()
     time.sleep(delay)
