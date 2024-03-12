@@ -28,9 +28,10 @@ def form_maze(c: cube.Cube) -> List[List[str]]:
     cube_face = c.get_face()
     return [
         [
-            rot.rotate_n(stickers.stickers[cube_face[row // 7][col // 7]], c.rotation)[
-                row % 7
-            ][col % 7]
+            rot.rotate_n(
+                stickers.stickers[cube_face[row // 7][col // 7][0]],
+                (c.rotation + cube_face[row // 7][col // 7][1]) % 4,
+            )[row % 7][col % 7]
             for col in range(21)
         ]
         for row in range(21)

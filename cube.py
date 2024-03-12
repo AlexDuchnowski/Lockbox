@@ -1,12 +1,14 @@
+from typing import List
+
 import rotation as rot
 
 
 class Cube:
     def __init__(self):
-        self.face = 0
-        self.rotation = 0
-        self.state = [
-            [[f"{F}{i*3+j}" for j in range(3)] for i in range(3)]
+        self.face: int = 0
+        self.rotation: int = 0
+        self.state: List[List[str, int]] = [
+            [[[f"{F}{i*3+j}", 0] for j in range(3)] for i in range(3)]
             for F in ["W", "O", "G", "R", "B", "Y"]
         ]
         self.neighbors = [
@@ -20,10 +22,7 @@ class Cube:
 
     def __repr__(self):
         return "\n".join(
-            [
-                " ".join(row)
-                for row in rot.rotate_n(self.state[self.face], self.rotation)
-            ]
+            [str(row) for row in rot.rotate_n(self.state[self.face], self.rotation)]
         )
 
     def change_face(self, direction):
@@ -31,26 +30,41 @@ class Cube:
         self.face, self.rotation = update[0], update[1] + self.rotation % 4
 
     def rotate_face_clockwise(self, face: int):
+        # Update the arrangement of stickers on the face
         new_face = rot.rotate_n(self.state[face], 1)
         self.state[face] = new_face
 
+        # Update the rotation of the stickers on the face
+        for row in self.state[face]:
+            for sticker in row:
+                sticker[1] = (sticker[1] + 1) % 4
+
+        # Update the arrangement of stickers on the neighboring faces
         neighbors = self.neighbors[face]
 
-        rotations, borders = [], []
+        face_rotations, borders, sticker_rotations = [], [], []
         for i, (neighbor, rotation) in enumerate(neighbors):
-            rotations.append(((i if i % 2 == 1 else 2 - i) + rotation) % 4)
-            self.state[neighbor] = rot.rotate_n(self.state[neighbor], rotations[-1])
+            face_rotations.append(((i if i % 2 == 1 else 2 - i) + rotation) % 4)
+            self.state[neighbor] = rot.rotate_n(
+                self.state[neighbor], face_rotations[-1]
+            )
             borders.append([x for x in self.state[neighbor][0]])
+            sticker_rotations.append(
+                self.neighbors[neighbor][(i + 1 - rotation) % 4][1]
+            )
 
         for i in range(4):
             neighbor = neighbors[i][0]
             for j in range(3):
-                self.state[neighbor][0][j] = borders[(i - 1) % 4][j]
+                # Update the rotation of the stickers on the neighboring faces using sticker_rotations
+                replacement = [
+                    borders[(i - 1) % 4][j][0],
+                    (borders[(i - 1) % 4][j][1] + sticker_rotations[(i - 1) % 4]) % 4,
+                ]
+                self.state[neighbor][0][j] = replacement
             self.state[neighbor] = rot.rotate_n(
-                self.state[neighbor], (4 - rotations[i]) % 4
+                self.state[neighbor], (4 - face_rotations[i]) % 4
             )
-        #! This needs to update rotations for specific stickers.
-        #! Rotation is no longer generalizable from just the face once we can rotate faces.
 
     def get_face(self):
         return rot.rotate_n(self.state[self.face], self.rotation)
@@ -64,6 +78,6 @@ if __name__ == "__main__":
     #     c.change_face(3)
     #     print(c)
     for _ in range(4):
-        c.rotate_face_clockwise(2)
+        c.rotate_face_clockwise(3)
         print()
         print(c)
