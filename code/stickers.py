@@ -14,7 +14,19 @@ colors = {
     "0": (0, 70, 173),
     "Y": (255, 213, 0),
     "#": (25, 25, 25),
+    "L": (200, 200, 200),
+    "K": (192, 192, 192),
 }
+
+key_room_alt = [
+    "#######",
+    "#YYYYY#",
+    "#YYYYYY",
+    "#YYYYYY",
+    "#YYYYYY",
+    "#YYYYY#",
+    "#######",
+]
 
 stickers: Dict[str, List[str]] = {
     "W0": [
@@ -57,7 +69,7 @@ stickers: Dict[str, List[str]] = {
         "##WWW##",
         "#WW0WW#",
         "WWWWWWW",
-        "W3WWW1W",
+        "W3WLW1W",
         "WWWWWWW",
         "#WW2WW#",
         "##WWW##",
@@ -461,9 +473,9 @@ stickers: Dict[str, List[str]] = {
     "Y4": [
         "#######",
         "#YYYYY#",
-        "YYYYYYY",
-        "YYYYYYY",
-        "YYYYYYY",
+        "YYYYYY#",
+        "YYYKYY#",
+        "YYYYYY#",
         "#YYYYY#",
         "#######",
     ],

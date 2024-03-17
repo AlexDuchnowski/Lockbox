@@ -86,6 +86,7 @@ def draw_player(
 
 
 pygame.init()
+pygame.font.init()
 
 
 async def main():
@@ -97,10 +98,14 @@ async def main():
     SCREEN_WIDTH = (21 + 2 * BORDER) * CELL_SIZE
     SCREEN_HEIGHT = (21 + 2 * BORDER) * CELL_SIZE
 
-    PLAYER_X = 9 + BORDER
-    PLAYER_Y = 9 + BORDER
+    PLAYER_X = 10 + BORDER
+    PLAYER_Y = 10 + BORDER
+
+    KEY_AQUIRED = False
 
     delay = 0.08
+
+    my_font = pygame.font.SysFont("Arial", 30)
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -159,40 +164,47 @@ async def main():
                     elif maze[PLAYER_Y + 1][PLAYER_X] != stickers.WALL:
                         render(screen, maze, CELL_SIZE, BORDER, PLAYER_X, PLAYER_Y)
                         PLAYER_Y += 1
-                elif event.key == pygame.K_SPACE and maze[PLAYER_Y][PLAYER_X] in "0123":
-                    c.rotate_adjacent_face(int(maze[PLAYER_Y][PLAYER_X]))
-                    maze = form_maze(c)
-                    render(screen, maze, CELL_SIZE, BORDER)
-                # elif event.key == pygame.K_u:
-                #     c.rotate_face_clockwise(0)
-                #     maze = form_maze(c)
-                #     render(screen, maze, CELL_SIZE, BORDER)
-                # elif event.key == pygame.K_l:
-                #     c.rotate_face_clockwise(1)
-                #     maze = form_maze(c)
-                #     render(screen, maze, CELL_SIZE, BORDER)
-                # elif event.key == pygame.K_f:
-                #     c.rotate_face_clockwise(2)
-                #     maze = form_maze(c)
-                #     render(screen, maze, CELL_SIZE, BORDER)
-                # elif event.key == pygame.K_r:
-                #     c.rotate_face_clockwise(3)
-                #     maze = form_maze(c)
-                #     render(screen, maze, CELL_SIZE, BORDER)
-                # elif event.key == pygame.K_b:
-                #     c.rotate_face_clockwise(4)
-                #     maze = form_maze(c)
-                #     render(screen, maze, CELL_SIZE, BORDER)
-                # elif event.key == pygame.K_d:
-                #     c.rotate_face_clockwise(5)
-                #     maze = form_maze(c)
-                #     render(screen, maze, CELL_SIZE, BORDER)
+                elif event.key == pygame.K_SPACE:
+                    if maze[PLAYER_Y][PLAYER_X] in "0123":
+                        c.rotate_adjacent_face(int(maze[PLAYER_Y][PLAYER_X]))
+                        maze = form_maze(c)
+                        render(screen, maze, CELL_SIZE, BORDER)
+                    elif maze[PLAYER_Y][PLAYER_X] == "K":
+                        KEY_AQUIRED = True
+                        for i, row in enumerate(stickers.key_room_alt):
+                            stickers.stickers["Y4"][i] = row
+                        maze = form_maze(c)
+                        render(screen, maze, CELL_SIZE, BORDER)
+                    elif maze[PLAYER_Y][PLAYER_X] == "L" and KEY_AQUIRED:
+                        run = False
 
         draw_player(screen, PLAYER_X, PLAYER_Y, CELL_SIZE, BORDER)
 
         pygame.display.update()
         # time.sleep(delay)
         await asyncio.sleep(0)
+
+    screen.fill((200, 200, 200))
+    you_win = my_font.render("You win!", False, (0, 0, 0))
+    answer_is = my_font.render("The answer is:", False, (0, 0, 0))
+    answer = my_font.render("[ANSWER]", False, (183, 18, 52))
+    bye_now = my_font.render("Bye now...", False, (0, 0, 0))
+
+    screen.blit(you_win, (CELL_SIZE * 9 + BORDER, CELL_SIZE * 9 + BORDER))
+    screen.blit(answer_is, (CELL_SIZE * 5 + BORDER, CELL_SIZE * 10 + BORDER))
+    screen.blit(answer, (CELL_SIZE * 12 + BORDER, CELL_SIZE * 10 + BORDER))
+    pygame.display.update()
+
+    await asyncio.sleep(15)
+
+    screen.blit(bye_now, (CELL_SIZE * 9 + BORDER, CELL_SIZE * 11 + BORDER))
+    pygame.display.update()
+
+    await asyncio.sleep(2)
+
+    screen.fill((0, 0, 0))
+    screen.blit(answer, (CELL_SIZE * 12 + BORDER, CELL_SIZE * 10 + BORDER))
+    pygame.display.update()
 
     pygame.quit()
 
