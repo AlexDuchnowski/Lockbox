@@ -59,7 +59,7 @@ class Cube:
                 # Update the rotation of the stickers on the neighboring faces using sticker_rotations
                 replacement = [
                     borders[(i - 1) % 4][j][0],
-                    (borders[(i - 1) % 4][j][1] + sticker_rotations[(i - 1) % 4]) % 4,
+                    (borders[(i - 1) % 4][j][1] - sticker_rotations[(i - 1) % 4]) % 4,
                 ]
                 self.state[neighbor][0][j] = replacement
             self.state[neighbor] = rot.rotate_n(
