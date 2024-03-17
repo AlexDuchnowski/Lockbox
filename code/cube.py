@@ -66,6 +66,9 @@ class Cube:
                 self.state[neighbor], (4 - face_rotations[i]) % 4
             )
 
+    def rotate_adjacent_face(self, direction: int):
+        self.rotate_face_clockwise(self.neighbors[self.face][direction][0])
+
     def get_face(self):
         return rot.rotate_n(self.state[self.face], self.rotation)
 
