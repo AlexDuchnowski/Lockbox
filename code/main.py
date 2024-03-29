@@ -143,7 +143,9 @@ async def main():
     # Set up cube
     c = cube.Cube()
 
-    setup = [1, 1, 1, 0, 0, 2, 2, 2, 3, 3, 3]
+    # L' B L R'
+    setup = [3, 3, 3, 0, 3, 1, 1, 1]  # [3, 3, 3, 1, 0]
+
     for side in setup:
         c.rotate_adjacent_face(side)
 
@@ -171,9 +173,9 @@ async def main():
                             i, screen, maze, c, CELL_SIZE, BORDER, PLAYER_X, PLAYER_Y
                         )
                 if event.key == pygame.K_SPACE:
-                    if maze[PLAYER_Y][PLAYER_X] in "0123":
+                    if maze[PLAYER_Y][PLAYER_X] == "C":
                         # face_rotate_sound.play()
-                        c.rotate_adjacent_face(int(maze[PLAYER_Y][PLAYER_X]))
+                        c.rotate_face_clockwise(c.face)
                         maze = form_maze(c)
                         render(screen, maze, CELL_SIZE, BORDER)
                     elif maze[PLAYER_Y][PLAYER_X] == "K":
@@ -209,7 +211,7 @@ async def main():
         screen.fill((200, 200, 200))
         you_win = my_font.render("You win!", False, (0, 0, 0))
         answer_is = my_font.render("The answer is:", False, (0, 0, 0))
-        answer = my_font.render("[ANSWER]", False, (183, 18, 52))
+        answer = my_font.render("FIZZING", False, (183, 18, 52))
         bye_now = my_font.render("Bye now...", False, (0, 0, 0))
 
         screen.blit(you_win, (CELL_SIZE * 9 + BORDER, CELL_SIZE * 9 + BORDER))
