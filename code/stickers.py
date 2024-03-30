@@ -3,25 +3,25 @@ from typing import Dict, List
 WALL = "#"
 
 colors = {
-    "W": (255, 255, 255),
-    "O": (255, 88, 0),
-    "G": (0, 155, 72),
-    "R": (183, 18, 52),
-    "B": (0, 70, 173),
-    "Y": (255, 213, 0),
-    "#": (25, 25, 25),
-    "L": (160, 82, 45),
-    "K": (192, 192, 192),
-    "C": (139, 0, 139),
+    "W": (255, 255, 255),  # White
+    "O": (255, 88, 0),  # Orange
+    "G": (0, 155, 72),  # Green
+    "R": (183, 18, 52),  # Red
+    "B": (0, 70, 173),  # Blue
+    "Y": (255, 213, 0),  # Yellow
+    "#": (25, 25, 25),  # Wall
+    "C": (139, 0, 139),  # Control Buttons
+    "D": (139, 69, 19),  # Door
+    "P": (128, 128, 128),  # Pedestal
 }
 
 key_room_alt = [
     "#######",
-    "#YYYYY#",
-    "#YYYYYY",
-    "#YYYYYY",
-    "#YYYYYY",
-    "#YYYYY#",
+    "#YYYDD#",
+    "DYYYYYY",
+    "DYYPYYY",
+    "DYYYYYY",
+    "#YYYDD#",
     "#######",
 ]
 
@@ -469,11 +469,11 @@ stickers: Dict[str, List[str]] = {
     ],
     "Y4": [
         "#######",
-        "#YYYYY#",
-        "YYYYYY#",
-        "YYYKYY#",
-        "YYYYYY#",
-        "#YYYYY#",
+        "#DDYYY#",
+        "YYYYYYD",
+        "YYYKYYD",
+        "YYYYYYD",
+        "#DDYYY#",
         "#######",
     ],
     "Y5": [

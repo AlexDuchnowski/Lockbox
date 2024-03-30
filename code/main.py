@@ -31,33 +31,63 @@ def form_maze(c: cube.Cube) -> List[List[str]]:
     ]
 
 
+def draw_lock(screen: pygame.Surface, CELL_SIZE: int, BORDER: int, rotation: int):
+    tile = pygame.Surface((CELL_SIZE, CELL_SIZE))
+    lock = pygame.image.load("sprites/Lock.png")
+    tile.blit(lock, (0, 0))
+    tile = pygame.transform.rotate(tile, 90 * rotation)
+    screen.blit(tile, ((10 + BORDER) * CELL_SIZE, (10 + BORDER) * CELL_SIZE))
+
+
+def draw_key(screen: pygame.Surface, CELL_SIZE: int, BORDER: int, rotation: int):
+    tile = pygame.Surface((CELL_SIZE, CELL_SIZE))
+    lock = pygame.image.load("sprites/Key.png")
+    tile.blit(lock, (0, 0))
+    tile = pygame.transform.rotate(tile, 90 * rotation)
+    screen.blit(tile, ((10 + BORDER) * CELL_SIZE, (10 + BORDER) * CELL_SIZE))
+
+
+def draw_cell(
+    screen: pygame.Surface,
+    maze: List[List[str]],
+    c: cube.Cube,
+    CELL_SIZE: int,
+    BORDER: int,
+    x: int,
+    y: int,
+):
+    if maze[y][x] == "L":
+        draw_lock(screen, CELL_SIZE, BORDER, c.rotation)
+    elif maze[y][x] == "K":
+        draw_key(screen, CELL_SIZE, BORDER, c.rotation)
+    else:
+        pygame.draw.rect(
+            screen,
+            vary_color(stickers.colors[maze[y][x]]),
+            (
+                (x + BORDER) * CELL_SIZE,
+                (y + BORDER) * CELL_SIZE,
+                CELL_SIZE,
+                CELL_SIZE,
+            ),
+        )
+
+
 def render(
     screen: pygame.Surface,
     maze: List[List[str]],
+    c: cube.Cube,
     CELL_SIZE: int,
     BORDER: int,
     x: Optional[int] = None,
     y: Optional[int] = None,
 ):
     if x is not None and y is not None:
-        pygame.draw.rect(
-            screen,
-            vary_color(stickers.colors[maze[y][x]]),
-            ((x + BORDER) * CELL_SIZE, (y + BORDER) * CELL_SIZE, CELL_SIZE, CELL_SIZE),
-        )
+        draw_cell(screen, maze, c, CELL_SIZE, BORDER, x, y)
     else:
         for i in range(21):
             for j in range(21):
-                pygame.draw.rect(
-                    screen,
-                    vary_color(stickers.colors[maze[i][j]]),
-                    (
-                        (j + BORDER) * CELL_SIZE,
-                        (i + BORDER) * CELL_SIZE,
-                        CELL_SIZE,
-                        CELL_SIZE,
-                    ),
-                )
+                draw_cell(screen, maze, c, CELL_SIZE, BORDER, j, i)
 
 
 def draw_player(
@@ -99,13 +129,13 @@ def move(
     if coords[[1, 0, 1, 0][direction]] == [0, 20, 20, 0][direction]:
         c.change_face(direction)
         maze = form_maze(c)
-        render(screen, maze, CELL_SIZE, BORDER)
+        render(screen, maze, c, CELL_SIZE, BORDER)
         coords[[1, 0, 1, 0][direction]] = [20, 0, 0, 20][direction]
     elif (
         maze[PLAYER_Y + [-1, 0, 1, 0][direction]][PLAYER_X + [0, 1, 0, -1][direction]]
         != stickers.WALL
     ):
-        render(screen, maze, CELL_SIZE, BORDER, PLAYER_X, PLAYER_Y)
+        render(screen, maze, c, CELL_SIZE, BORDER, PLAYER_X, PLAYER_Y)
         coords[[1, 0, 1, 0][direction]] += [-1, 1, 1, -1][direction]
     return maze, *coords
 
@@ -143,8 +173,8 @@ async def main():
     # Set up cube
     c = cube.Cube()
 
-    # L' B L R'
-    setup = [3, 3, 3, 0, 3, 1, 1, 1]  # [3, 3, 3, 1, 0]
+    # scramble: L' B L R'
+    setup = [3, 3, 3, 0, 3, 1, 1, 1]
 
     for side in setup:
         c.rotate_adjacent_face(side)
@@ -152,7 +182,7 @@ async def main():
     # Set up maze
     maze = form_maze(c)
     screen.fill((200, 200, 200))
-    render(screen, maze, CELL_SIZE, BORDER)
+    render(screen, maze, c, CELL_SIZE, BORDER)
 
     MOVE_LOG = [None, None, None, None]
 
@@ -177,14 +207,14 @@ async def main():
                         # face_rotate_sound.play()
                         c.rotate_face_clockwise(c.face)
                         maze = form_maze(c)
-                        render(screen, maze, CELL_SIZE, BORDER)
+                        render(screen, maze, c, CELL_SIZE, BORDER)
                     elif maze[PLAYER_Y][PLAYER_X] == "K":
                         KEY_AQUIRED = True
                         # key_pickup_sound.play()
                         for i, row in enumerate(stickers.key_room_alt):
                             stickers.stickers["Y4"][i] = row
                         maze = form_maze(c)
-                        render(screen, maze, CELL_SIZE, BORDER)
+                        render(screen, maze, c, CELL_SIZE, BORDER)
                     elif maze[PLAYER_Y][PLAYER_X] == "L" and KEY_AQUIRED:
                         run = False
                         win = True
