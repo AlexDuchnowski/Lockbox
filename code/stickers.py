@@ -1,13 +1,17 @@
 from typing import Dict, List
 
-WALL = "#"
+WALLS = ("#", "D")
 
 colors = {
     "W": (255, 255, 255),  # White
     "O": (255, 88, 0),  # Orange
+    "3": (255, 88, 0),
     "G": (0, 155, 72),  # Green
+    "2": (0, 155, 72),
     "R": (183, 18, 52),  # Red
+    "1": (183, 18, 52),
     "B": (0, 70, 173),  # Blue
+    "0": (0, 70, 173),
     "Y": (255, 213, 0),  # Yellow
     "#": (25, 25, 25),  # Wall
     "C": (139, 0, 139),  # Control Buttons
@@ -29,18 +33,18 @@ stickers: Dict[str, List[str]] = {
     "W0": [
         "##WWW##",
         "#WWWWW#",
-        "WWWWWW#",
-        "WWWWWW#",
-        "WWWWWW#",
+        "WWWWWWW",
+        "WWWWWWW",
+        "WWWWWWW",
         "#WWWWW#",
         "##WWW##",
     ],
     "W1": [
         "#######",
         "#WWWWW#",
-        "#WWWWW#",
-        "#WWWWW#",
-        "#WWWWW#",
+        "WWWWWW#",
+        "WWWWWW#",
+        "WWWWWW#",
         "#WWWWW#",
         "#######",
     ],
@@ -56,19 +60,19 @@ stickers: Dict[str, List[str]] = {
     "W3": [
         "##WWW##",
         "#WWWWW#",
-        "WWWWWWW",
-        "WWWWWWW",
-        "WWWWWWW",
+        "#WWWWWW",
+        "#WWWWWW",
+        "#WWWWWW",
         "#WWWWW#",
         "##WWW##",
     ],
     "W4": [
         "##WWW##",
-        "#WWWWW#",
+        "#WW0WW#",
         "WWWWWWW",
-        "WWWLWWW",
+        "W3WLW1W",
         "WWWWWWW",
-        "#WWWWW#",
+        "#WW2WW#",
         "##WWW##",
     ],
     "W5": [
@@ -117,7 +121,7 @@ stickers: Dict[str, List[str]] = {
         "##OOO##",
     ],
     "O1": [
-        "##OOO##",
+        "#######",
         "#OOOOO#",
         "#OOOOOO",
         "#OOOOOO",
@@ -147,7 +151,7 @@ stickers: Dict[str, List[str]] = {
         "#######",
         "#OOOOO#",
         "#OOOOOO",
-        "#OOCOOO",
+        "#OOOOOO",
         "#OOOOOO",
         "#OOOOO#",
         "##OOO##",
@@ -228,10 +232,10 @@ stickers: Dict[str, List[str]] = {
         "#######",
         "#GGGGG#",
         "GGGGGGG",
-        "GGGCGGG",
+        "GGGGGGG",
         "GGGGGGG",
         "#GGGGG#",
-        "#######",
+        "##GGG##",
     ],
     "G5": [
         "#######",
@@ -252,7 +256,7 @@ stickers: Dict[str, List[str]] = {
         "#######",
     ],
     "G7": [
-        "#######",
+        "##GGG##",
         "#GGGGG#",
         "#GGGGG#",
         "#GGGGG#",
@@ -294,7 +298,7 @@ stickers: Dict[str, List[str]] = {
         "RRRRRR#",
         "RRRRRR#",
         "#RRRRR#",
-        "##RRR##",
+        "#######",
     ],
     "R3": [
         "##RRR##",
@@ -309,13 +313,13 @@ stickers: Dict[str, List[str]] = {
         "#######",
         "#RRRRR#",
         "RRRRRRR",
-        "RRRCRRR",
+        "RRRRRRR",
         "RRRRRRR",
         "#RRRRR#",
         "#######",
     ],
     "R5": [
-        "##RRR##",
+        "#######",
         "#RRRRR#",
         "RRRRRRR",
         "RRRRRRR",
@@ -390,7 +394,7 @@ stickers: Dict[str, List[str]] = {
         "##BBB##",
         "#BBBBB#",
         "#BBBBBB",
-        "#BBCBBB",
+        "#BBBBBB",
         "#BBBBBB",
         "#BBBBB#",
         "#######",
