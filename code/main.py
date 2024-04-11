@@ -35,7 +35,7 @@ def draw_lock(screen: pygame.Surface, CELL_SIZE: int, rotation: int):
     tile = pygame.Surface((CELL_SIZE, CELL_SIZE))
     lock = pygame.image.load("sprites/Lock_2.png")
     tile.blit(lock, (0, 0))
-    tile = pygame.transform.rotate(tile, 90 * rotation)
+    tile = pygame.transform.rotate(tile, -90 * rotation)
     screen.blit(tile, (10 * CELL_SIZE, 10 * CELL_SIZE))
 
 
@@ -43,7 +43,7 @@ def draw_key(screen: pygame.Surface, CELL_SIZE: int, rotation: int):
     tile = pygame.Surface((CELL_SIZE, CELL_SIZE))
     lock = pygame.image.load("sprites/Key.png")
     tile.blit(lock, (0, 0))
-    tile = pygame.transform.rotate(tile, 90 * rotation)
+    tile = pygame.transform.rotate(tile, -90 * rotation)
     screen.blit(tile, (10 * CELL_SIZE, 10 * CELL_SIZE))
 
 
