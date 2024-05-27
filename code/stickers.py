@@ -1,7 +1,8 @@
 from typing import Dict, List
 
-WALLS = ("#", "D")
+WALLS = ("#", "D")  # Indicates which characters the player cannot pass through
 
+# The colors to be displayed for each character when rendering the game
 colors = {
     "W": (255, 255, 255),  # White
     "O": (255, 88, 0),  # Orange
@@ -19,6 +20,7 @@ colors = {
     "P": (128, 128, 128),  # Pedestal
 }
 
+# The changed key room after the key has been picked up
 key_room_alt = [
     "#######",
     "#YYYDD#",
@@ -29,6 +31,7 @@ key_room_alt = [
     "#######",
 ]
 
+# The initial state of the game
 stickers: Dict[str, List[str]] = {
     "W0": [
         "##WWW##",

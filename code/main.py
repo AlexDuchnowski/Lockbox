@@ -10,6 +10,7 @@ import stickers
 
 
 def vary_color(color: Tuple[int]) -> List[int]:
+    """Varies the color slightly to add a little variety/texture to the game."""
     if color == (25, 25, 25):
         return color
     shift = randint(-10, 10)
@@ -18,6 +19,7 @@ def vary_color(color: Tuple[int]) -> List[int]:
 
 
 def form_maze(c: cube.Cube) -> List[List[str]]:
+    """Forms a character representation of the current face of the cube."""
     cube_face = c.get_face()
     return [
         [
@@ -32,6 +34,7 @@ def form_maze(c: cube.Cube) -> List[List[str]]:
 
 
 def draw_lock(screen: pygame.Surface, CELL_SIZE: int, rotation: int):
+    """Renders the image of the lock in the center of the maze."""
     tile = pygame.Surface((CELL_SIZE, CELL_SIZE))
     lock = pygame.image.load("sprites/Lock_2.png")
     tile.blit(lock, (0, 0))
@@ -40,6 +43,7 @@ def draw_lock(screen: pygame.Surface, CELL_SIZE: int, rotation: int):
 
 
 def draw_key(screen: pygame.Surface, CELL_SIZE: int, rotation: int):
+    """Renders the image of the key in the center of the maze."""
     tile = pygame.Surface((CELL_SIZE, CELL_SIZE))
     lock = pygame.image.load("sprites/Key.png")
     tile.blit(lock, (0, 0))
@@ -56,6 +60,7 @@ def draw_cell(
     y: int,
     colorblind: bool,
 ):
+    """Renders a single cell of the maze."""
     if maze[y][x] == "L":
         draw_lock(screen, CELL_SIZE, c.rotation)
     elif maze[y][x] == "K":
@@ -103,6 +108,7 @@ def render_maze(
     x: Optional[int] = None,
     y: Optional[int] = None,
 ):
+    """Renders the entire maze. If x and y are provided, only that cell is updated."""
     if x is not None and y is not None:
         draw_cell(screen, maze, c, CELL_SIZE, x, y, colorblind)
     else:
@@ -118,6 +124,10 @@ def draw_player(
     CELL_SIZE: int,
     interactable: bool,
 ):
+    """
+    Draws the player character on the screen. If the player is on an interactable cell,
+    a small square is drawn in the center to indicate this fact.
+    """
     pygame.draw.rect(
         screen,
         (60, 60, 60),
@@ -161,8 +171,11 @@ def move(
     PLAYER_Y: int,
     colorblind: bool,
 ) -> Tuple[List[List[str]], int, int]:
+    """Moves the player character in the specified direction."""
     coords = [PLAYER_X, PLAYER_Y]
-    if coords[[1, 0, 1, 0][direction]] == [0, 20, 20, 0][direction]:
+    if (
+        coords[[1, 0, 1, 0][direction]] == [0, 20, 20, 0][direction]
+    ):  # If the player is at the edge of the maze
         c.change_face(direction)
         maze = form_maze(c)
         render_maze(screen, maze, c, CELL_SIZE, colorblind)
@@ -170,7 +183,7 @@ def move(
     elif (
         maze[PLAYER_Y + [-1, 0, 1, 0][direction]][PLAYER_X + [0, 1, 0, -1][direction]]
         not in stickers.WALLS
-    ):
+    ):  # If the player is moving within the borders of the maze
         render_maze(screen, maze, c, CELL_SIZE, colorblind, PLAYER_X, PLAYER_Y)
         coords[[1, 0, 1, 0][direction]] += [-1, 1, 1, -1][direction]
     return maze, *coords
@@ -183,6 +196,8 @@ my_font = pygame.font.SysFont("arial", 30, bold=True)
 
 
 async def main():
+    """Runs the game."""
+    # Initialize several variables
     CELL_SIZE = 32
 
     SCREEN_WIDTH = 21 * CELL_SIZE
@@ -229,7 +244,7 @@ async def main():
     MOVE_LOG = [None, None, None, None]
 
     while run:
-        if intro:
+        if intro:  # Display the title/intro screen
             screen.fill((200, 200, 200))
             screen.blit(welcome_to, (CELL_SIZE * 2, CELL_SIZE * 2))
             screen.blit(lockbox, (CELL_SIZE * 4, CELL_SIZE * 4))
@@ -250,7 +265,7 @@ async def main():
                         render_maze(screen, maze, c, CELL_SIZE, colorblind)
                     if event.key == pygame.K_c:
                         colorblind = not colorblind
-        else:
+        else:  # Run main game
             # Handle Events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -327,7 +342,7 @@ async def main():
         # time.sleep(delay)
         await asyncio.sleep(0)
 
-    if win:
+    if win:  # Display the win sequence and reveal the puzzle answer
         screen.fill((200, 200, 200))
         you_win = pygame.transform.scale_by(
             my_font.render("You win!", False, (0, 0, 0)), 2

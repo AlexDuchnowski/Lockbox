@@ -5,6 +5,9 @@ import rotation as rot
 
 class Cube:
     def __init__(self):
+        """
+        Initializes a Rubik's Cube in a solved state, with the white face facing the user (green face below, red face right, etc.).
+        """
         self.face: int = 0
         self.rotation: int = 0
         self.state: List[List[str, int]] = [
@@ -20,16 +23,21 @@ class Cube:
             [[2, 0], [3, 1], [4, 2], [1, 3]],  # Neighbors of Y
         ]
 
+    def get_face(self):
+        """Returns the current state of the current face of the cube."""
+        return rot.rotate_n(self.state[self.face], self.rotation)
+
     def __repr__(self):
-        return "\n".join(
-            [str(row) for row in rot.rotate_n(self.state[self.face], self.rotation)]
-        )
+        """Prints the current state of the current face of the cube for debugging purposes."""
+        return "\n".join([str(row) for row in self.get_face()])
 
     def change_face(self, direction):
+        """Changes the current face of the cube to the face in the specified direction."""
         update = self.neighbors[self.face][(direction - self.rotation) % 4]
         self.face, self.rotation = update[0], update[1] + self.rotation % 4
 
     def rotate_face_clockwise(self, face: int):
+        """Rotates the specified face of the cube clockwise by 90 degrees."""
         # Update the arrangement of stickers on the face
         new_face = rot.rotate_n(self.state[face], 1)
         self.state[face] = new_face
@@ -67,19 +75,17 @@ class Cube:
             )
 
     def rotate_adjacent_face(self, direction: int):
+        """Rotates clockwise the face adjacent to the current face in the specified direction."""
         self.rotate_face_clockwise(self.neighbors[self.face][direction][0])
-
-    def get_face(self):
-        return rot.rotate_n(self.state[self.face], self.rotation)
 
 
 if __name__ == "__main__":
+    # Initialize a solved Rubik's Cube
     c = Cube()
     print(c)
-    # for _ in range(4):
-    #     print()
-    #     c.change_face(3)
-    #     print(c)
+
+    # Rotate the right face of the cube clockwise 4 times (returning to solved),
+    # printing the state of the cube at each point in the process
     for _ in range(4):
         c.rotate_face_clockwise(3)
         print()
