@@ -1,17 +1,22 @@
-# Small Concrete Stuff [BAD]
-- Colorblind mode would be good
-- Add DAS
-- Sprites
-- Reset command
-- Commands explanation
+# Feedback
 
-# Bigger Picture Stuff [BAD]
-- Unlocking Controls
+## Small Concrete Stuff [BAD]
+
+- [DONE] Colorblind mode would be good
+- [DONE] Add DAS
+- [DONE] Sprites
+- [TODO] Reset command
+- [DONE] Commands explanation
+
+## Bigger Picture Stuff [BAD]
+
+- Maybe unlock controls over time?
 - Not great that you can solve without leaving the white face
 - Plugging in the solution once it's been retrieved from a solver is somewhat underwhelming
-- Providing a goal...?
+- Provide a goal...?
 
-# Bigger Picture Stuff [GOOD]
+## Bigger Picture Stuff [GOOD]
+
 - Having to use buttons to leave the starting location
 - The maze is simple
 - Color pallete / simplicity
